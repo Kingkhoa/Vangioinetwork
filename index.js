@@ -19,7 +19,7 @@ let BOT_PORT = parseInt(process.env.BOT_PORT) || 25565;
 const toggles = {
   afkmode: false,
   thien: false,
-  quylai: false, // Đã đổi từ quylai thành quylai
+  quylay: false, // Đã đổi từ quylai thành quylay
   dinhthan: false,
   quanghao: false,
   ngoi: false,     // MỚI: Nút ngồi (Sneak)
@@ -61,7 +61,7 @@ let respawnTimer = null;
 let commandResponseTimer = null;
 
 // TIMERS DÀNH CHO CÁC TÍNH NĂNG ĐỊNH KỲ
-let quylaiInterval = null;
+let quylayInterval = null;
 let ngoiInterval = null;
 let attackLeftInterval = null;
 let attackRightInterval = null;
@@ -201,7 +201,7 @@ app.get('/api/toggle/:feature', (req, res) => {
     if (bot && bot.entity && bot._client && bot._client.state === 'play' && !isManualStopped) {
       if (feat === 'afkmode') safeChat(toggles[feat] ? '/afkmode vao' : '/afkmode ra');
       if (feat === 'thien') safeChat('/thien');
-      if (feat === 'quylai') safeChat('/quylai');
+      if (feat === 'quylay') safeChat('/quylay');
       if (feat === 'dinhthan') safeChat('/dinhthan');
       if (feat === 'quanghao') safeChat('/quanghao');
       if (feat === 'skill1') safeChat('/kinang_1');
@@ -644,7 +644,7 @@ app.get('/', (req, res) => {
             <div class="btn-group-responsive">
               ${renderToggleBtn('afkmode', 'AFK Mode')}
               ${renderToggleBtn('thien', 'Thiền')}
-              ${renderToggleBtn('quylai', 'Quỳ Lạy')}
+              ${renderToggleBtn('quylay', 'Quỳ Lạy')}
               ${renderToggleBtn('dinhthan', 'Định Thân')}
               ${renderToggleBtn('quanghao', 'Quang Hào')}
               ${renderToggleBtn('ngoi', 'Mặt Ngồi / Rón Rén (5s/lần)')}
@@ -745,7 +745,7 @@ app.get('/', (req, res) => {
 app.listen(port, () => console.log(`[HTTP SERVER] Running on port ${port}`));
 
 function stopFeatureLoops() {
-  if (quylaiInterval) { clearInterval(quylaiInterval); quylaiInterval = null; }
+  if (quylayInterval) { clearInterval(quylayInterval); quylayInterval = null; }
   if (ngoiInterval) { clearInterval(ngoiInterval); ngoiInterval = null; }
   if (attackLeftInterval) { clearInterval(attackLeftInterval); attackLeftInterval = null; }
   if (attackRightInterval) { clearInterval(attackRightInterval); attackRightInterval = null; }
@@ -759,9 +759,9 @@ function restartLoops() {
   if (!bot || !bot.entity || !bot._client || bot._client.state !== 'play' || isManualStopped) return;
 
   // 1. Quỳ lạy lặp lại mỗi 47s khi công tắc đang BẬT
-  if (toggles.quylai) {
-    quylaiInterval = setInterval(() => {
-      if (toggles.quylai) safeChat('/quylai');
+  if (toggles.quylay) {
+    quylayInterval = setInterval(() => {
+      if (toggles.quylay) safeChat('/quylay');
     }, 47000);
   }
 
@@ -920,8 +920,8 @@ function executeActiveFeaturesOnSpawn() {
     setTimeout(() => safeChat('/thien'), delay);
     delay += 1200;
   }
-  if (toggles.quylai) {
-    setTimeout(() => safeChat('/quylai'), delay);
+  if (toggles.quylay) {
+    setTimeout(() => safeChat('/quylay'), delay);
     delay += 1200;
   }
   if (toggles.dinhthan) {
